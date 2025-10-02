@@ -10,7 +10,7 @@ const commonNotificationProps: CommonNotificationProps = {
   autoClose: 3000,
 };
 
-  export const successNotification = (message: string) => 
+export const successNotification = (message: string) => 
     notifications.show({
       ...commonNotificationProps,
       title: 'Success',
@@ -18,7 +18,7 @@ const commonNotificationProps: CommonNotificationProps = {
       color: 'green',
     })
 
-  export const errorNotification = (message: string) => 
+export const errorNotification = (message: string) => 
     notifications.show({
       ...commonNotificationProps,
       title: 'Error',
@@ -27,7 +27,7 @@ const commonNotificationProps: CommonNotificationProps = {
     })  
   
 
-  export const infoNotification = (message: string) => 
+export const infoNotification = (message: string) => 
     notifications.show({
       ...commonNotificationProps,
       title: 'Info',
@@ -36,7 +36,7 @@ const commonNotificationProps: CommonNotificationProps = {
     })  
   
 
-  export const warningNotification = (message: string) => 
+export const warningNotification = (message: string) => 
     notifications.show({
       ...commonNotificationProps,
       title: 'Warning',
