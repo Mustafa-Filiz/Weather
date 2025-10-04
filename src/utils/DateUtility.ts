@@ -5,6 +5,10 @@ class DateUtility {
     if (!dateTime) return null
     return dayjs(dateTime).hour()
   }
+
+  static getCurrentHour(): number {
+    return dayjs().hour()
+  }
 }
 
 export default DateUtility

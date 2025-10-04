@@ -63,3 +63,4 @@ export const currentWeatherSchema = fullForecastSchema.omit({ forecast: true })
 
 export type ForecastType = z.infer<typeof fullForecastSchema> | null
 export type CurrentWeatherType = z.infer<typeof currentWeatherSchema> | null
+export type HourType = z.infer<typeof hourSchema>
