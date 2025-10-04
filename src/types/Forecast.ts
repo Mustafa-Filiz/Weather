@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 export const locationSchema = z.object({
   name: z.string(),
@@ -9,13 +9,13 @@ export const locationSchema = z.object({
   tz_id: z.string(),
   localtime_epoch: z.number(),
   localtime: z.string(),
-});
+})
 
 export const conditionSchema = z.object({
   text: z.string(),
   icon: z.string(),
   code: z.number(),
-});
+})
 
 export const currentSchema = z.object({
   last_updated_epoch: z.number(),
@@ -24,14 +24,14 @@ export const currentSchema = z.object({
   is_day: z.number(),
   condition: conditionSchema,
   feelslike_c: z.number(),
-});
+})
 
 export const daySchema = z.object({
   maxtemp_c: z.number(),
   mintemp_c: z.number(),
   avgtemp_c: z.number(),
   condition: conditionSchema,
-});
+})
 
 export const hourSchema = z.object({
   time_epoch: z.number(),
@@ -40,23 +40,26 @@ export const hourSchema = z.object({
   is_day: z.number(),
   condition: conditionSchema,
   feelslike_c: z.number(),
-});
+})
 
 export const forecastDaySchema = z.object({
   date: z.string(),
   date_epoch: z.number(),
   day: daySchema,
   hour: z.array(hourSchema),
-});
+})
 
 export const forecastSchema = z.object({
   forecastday: z.array(forecastDaySchema),
-});
+})
 
 export const fullForecastSchema = z.object({
   location: locationSchema,
   current: currentSchema,
   forecast: forecastSchema,
-});
+})
 
-export type Forecast = z.infer<typeof fullForecastSchema> | null;
+export const currentWeatherSchema = fullForecastSchema.omit({ forecast: true })
+
+export type ForecastType = z.infer<typeof fullForecastSchema> | null
+export type CurrentWeatherType = z.infer<typeof currentWeatherSchema> | null

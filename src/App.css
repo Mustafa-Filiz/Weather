@@ -1,0 +1,14 @@
+.hourly-forecast-area {
+    /* max-width: calc(100vw - 300px); */
+    flex-wrap: nowrap !important;
+    margin: auto;
+    overflow: auto;
+    border: 1px solid var(--mantine-color-gray-3);
+    border-radius: 1rem;
+}
+
+@media (max-width: 768px) {
+    .hourly-forecast-area {
+        /* max-width: 100%; */
+    }
+}

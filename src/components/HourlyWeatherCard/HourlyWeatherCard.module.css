@@ -1,0 +1,14 @@
+.card {
+    overflow: visible;
+}
+
+.hour {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.temp {
+    margin: 0;
+    font-size: 1.2rem;
+}
