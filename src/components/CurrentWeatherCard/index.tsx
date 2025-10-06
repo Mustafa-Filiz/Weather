@@ -1,8 +1,9 @@
 import { ActionIcon, Card, Group, NumberFormatter, Stack } from '@mantine/core'
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import NumberUtility from '../../utils/NumberUtility'
 import classes from './CurrentWeatherCard.module.css'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
+import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 type Props = {
   city?: string
@@ -19,6 +20,21 @@ const CurrentWeahterCard: FC<Props> = ({
   max_temp_c,
   min_temp_c,
 }) => {
+  const [isHovered, setIsHovered] = useState(false)
+
+  const [favPlaces, setFavPlaces] = useLocalStorage<string[]>('favPlaces', [])
+
+  const isFav = city ? favPlaces.includes(city) : false
+
+  const toggleFav = () => {
+    if (!city) return
+    if (isFav) {
+      setFavPlaces((prev) => prev.filter((place) => place !== city))
+    } else {
+      setFavPlaces((prev) => [...prev, city])
+    }
+  }
+
   return (
     <Card
       className={classes.card}
@@ -33,9 +49,11 @@ const CurrentWeahterCard: FC<Props> = ({
         variant="default"
         radius="md"
         size={36}
+        onClick={toggleFav}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <FaRegHeart className={classes.heartOutline} />
-        <FaHeart className={classes.heartSolid} />
+        {isFav || isHovered ? <FaHeart /> : <FaRegHeart />}
       </ActionIcon>
       <Stack align="center">
         <h3 className={classes.cityName}>{city}</h3>

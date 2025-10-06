@@ -1,5 +1,4 @@
 .like {
-    display: none;
     color: var(--mantine-color-red-7);
     position: absolute;
     top: 10px;
@@ -14,22 +13,6 @@
 .like:hover svg {
     color: var(--mantine-color-red-9);
     transform: scale(1.2);
-}
-
-.heartSolid {
-    display: none;
-}
-
-.heartOutline {
-    display: block;
-}
-
-.like:hover .heartOutline {
-    display: none;
-}
-
-.like:hover .heartSolid {
-    display: block;
 }
 
 .cityName {
