@@ -9,6 +9,10 @@ class DateUtility {
   static getCurrentHour(): number {
     return dayjs().hour()
   }
+
+  static getDayName(date: string): string {
+    return dayjs(date).format('ddd')
+  }
 }
 
 export default DateUtility
