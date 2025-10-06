@@ -3,7 +3,7 @@ import { useState, type FC } from 'react'
 import NumberUtility from '../../utils/NumberUtility'
 import classes from './CurrentWeatherCard.module.css'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
-import { useLocalStorage } from '../../hooks/useLocalStorage'
+import { useLocalStorage } from '@mantine/hooks'
 
 type Props = {
   city?: string
@@ -22,7 +22,10 @@ const CurrentWeahterCard: FC<Props> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false)
 
-  const [favPlaces, setFavPlaces] = useLocalStorage<string[]>('favPlaces', [])
+  const [favPlaces, setFavPlaces] = useLocalStorage<string[]>({
+    key: 'favPlaces',
+    defaultValue: [],
+  })
 
   const isFav = city ? favPlaces.includes(city) : false
 
@@ -60,7 +63,7 @@ const CurrentWeahterCard: FC<Props> = ({
         <div className={classes.currentTemp}>
           <NumberFormatter
             value={NumberUtility.roundNumber(curr_temp_c)}
-            suffix="°C"
+            suffix="°"
           />
         </div>
         <div className={classes.desc}>{description}</div>
@@ -70,14 +73,14 @@ const CurrentWeahterCard: FC<Props> = ({
               H:{' '}
               <NumberFormatter
                 value={NumberUtility.roundNumber(max_temp_c)}
-                suffix="°C"
+                suffix="°"
               />
             </div>
             <div className="min-temp">
               L:{' '}
               <NumberFormatter
                 value={NumberUtility.roundNumber(min_temp_c)}
-                suffix="°C"
+                suffix="°"
               />
             </div>
           </Group>

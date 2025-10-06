@@ -48,7 +48,7 @@ const HourlyWeatherCard: FC<Props> = ({ description, time, temp_c, icon }) => {
         <p className={classes.temp}>
           <NumberFormatter
             value={NumberUtility.roundNumber(temp_c)}
-            suffix="°C"
+            suffix="°"
           />
         </p>
       </Stack>

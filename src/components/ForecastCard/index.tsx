@@ -50,7 +50,7 @@ const ForecastCard: FC<Props> = ({ forecastData, currentTemp }) => {
             <Group gap="xs" w="60%" align="center">
               <NumberFormatter
                 value={NumberUtility.roundNumber(day.day.mintemp_c)}
-                suffix="°C"
+                suffix="°"
               />
               <RangeSlider
                 w="60%"
@@ -66,7 +66,7 @@ const ForecastCard: FC<Props> = ({ forecastData, currentTemp }) => {
               />
               <NumberFormatter
                 value={NumberUtility.roundNumber(day.day.maxtemp_c)}
-                suffix="°C"
+                suffix="°"
               />
             </Group>
           </Group>

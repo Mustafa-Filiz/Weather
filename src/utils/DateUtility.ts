@@ -13,6 +13,11 @@ class DateUtility {
   static getDayName(date: string): string {
     return dayjs(date).format('ddd')
   }
+
+  static displayTime(dateTime?: string): string {
+    if (!dateTime) return ''
+    return dayjs(dateTime).format('HH:mm')
+  }
 }
 
 export default DateUtility

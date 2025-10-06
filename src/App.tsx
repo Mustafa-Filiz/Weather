@@ -6,6 +6,7 @@ import {
   Flex,
   Group,
   MantineProvider,
+  Stack,
   Title,
 } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
@@ -14,13 +15,14 @@ import { useGetForecastData } from './services/GetForecastData'
 import ThemeToggleButton from './components/ThemeToggleButton'
 import { useGeolocation } from './hooks/useGeolocation'
 import { theme } from './utils/theme'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useLocalStorage } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
 import HourlyWeatherCard from './components/HourlyWeatherCard'
 import CurrentWeahterCard from './components/CurrentWeatherCard'
 import ForecastCard from './components/ForecastCard'
 import { useEffect, useState } from 'react'
-import { useLocalStorage } from './hooks/useLocalStorage'
+
+import FavPlaceCard from './components/FavPlaceCard'
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
@@ -35,10 +37,14 @@ function App() {
   const coords = latitude && longitude ? `${latitude},${longitude}` : undefined
   const { data: forecastData } = useGetForecastData(searchVal)
 
-  const [historyItems, setHistoryItems] = useLocalStorage<string[]>(
-    'history',
-    []
-  )
+  const [historyItems, setHistoryItems] = useLocalStorage<string[]>({
+    key: 'history',
+    defaultValue: [],
+  })
+  const [favPlaces] = useLocalStorage<string[]>({
+    key: 'favPlaces',
+    defaultValue: [],
+  })
 
   const form = useForm({
     initialValues: {
@@ -92,7 +98,7 @@ function App() {
               visibleFrom="sm"
               size="sm"
             />
-            <Title order={3}>Weather App</Title>
+            <Title order={2}>Weather App</Title>
 
             <ThemeToggleButton is_day={forecastData?.current.is_day} />
           </Group>
@@ -104,8 +110,15 @@ function App() {
               {...form.getInputProps('searchValue')}
               placeholder="Search"
               data={historyItems}
+              radius="lg"
             />
           </form>
+
+          <Stack mt="md" gap="md">
+            {favPlaces.map((place, index) => (
+              <FavPlaceCard key={index} city={place} />
+            ))}
+          </Stack>
         </AppShell.Navbar>
         <AppShell.Main>
           <div className="main-content">

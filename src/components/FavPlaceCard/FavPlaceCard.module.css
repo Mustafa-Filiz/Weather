@@ -1,0 +1,22 @@
+.cityName {
+    font-size: 1.3rem;
+}
+
+.time {
+    font-size: 0.8rem;
+}
+
+.temperature {
+    font-size: 1.8rem;
+}
+
+.description {
+    font-size: 0.8rem;
+}
+
+.max_temp {
+    font-size: 0.8rem;
+}
+.min_temp {
+    font-size: 0.8rem;
+}
