@@ -23,6 +23,7 @@ import ForecastCard from './components/ForecastCard'
 import { useEffect, useState } from 'react'
 
 import FavPlaceCard from './components/FavPlaceCard'
+import AqiCard from './components/AqiCard'
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
@@ -144,10 +145,15 @@ function App() {
                   : null}
               </Flex>
             </Card>
-            <ForecastCard
-              forecastData={forecastData?.forecast.forecastday}
-              currentTemp={forecastData?.current.temp_c}
-            />
+            <Group grow align="stretch">
+              <ForecastCard
+                forecastData={forecastData?.forecast.forecastday}
+                currentTemp={forecastData?.current.temp_c}
+              />
+              <AqiCard
+                aqi_index={forecastData?.current.air_quality['us-epa-index']}
+              />
+            </Group>
           </div>
         </AppShell.Main>
       </AppShell>

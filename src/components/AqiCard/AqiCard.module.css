@@ -1,0 +1,20 @@
+.description {
+  font-size: 1.6rem;
+}
+
+.thumb {
+  display: none;
+}
+
+.bar {
+  background: linear-gradient(
+    to right,
+    #0000ff,
+    #00ffff,
+    #00ff00,
+    #ffff00,
+    #ffa500,
+    #ff0000,
+    #800000
+  );
+}

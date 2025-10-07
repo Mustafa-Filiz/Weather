@@ -29,13 +29,7 @@ const ForecastCard: FC<Props> = ({ forecastData, currentTemp }) => {
   )
 
   return (
-    <Card
-      className={classes.forecastCard}
-      withBorder
-      padding="md"
-      radius="lg"
-      my="md"
-    >
+    <Card withBorder radius="lg">
       <Title order={6}>
         <FaCalendarDays /> 3 Day Forecast
       </Title>
@@ -53,16 +47,18 @@ const ForecastCard: FC<Props> = ({ forecastData, currentTemp }) => {
                 suffix="°"
               />
               <RangeSlider
+                classNames={{
+                  bar: classes.bar,
+                  thumb: classes.thumb,
+                }}
                 w="60%"
                 domain={[minSliderValue, maxSliderValue]}
-                defaultValue={[
+                value={[
                   NumberUtility.roundNumber(day.day.mintemp_c),
                   NumberUtility.roundNumber(day.day.maxtemp_c),
                 ]}
                 showLabelOnHover={false}
                 {...(index === 0 && { marks: [{ value: currentTemp || 0 }] })}
-                thumbSize={1}
-                disabled
               />
               <NumberFormatter
                 value={NumberUtility.roundNumber(day.day.maxtemp_c)}

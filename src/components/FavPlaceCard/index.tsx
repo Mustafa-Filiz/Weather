@@ -32,7 +32,7 @@ const FavPlaceCard: FC<Props> = ({ city }) => {
         <Text className={classes.description}>
           {weatherData?.current.condition.text}
         </Text>
-        <Group>
+        <Group gap="xs">
           <Text className={classes.max_temp}>
             H: <NumberFormatter value={25} suffix="°" />
           </Text>
