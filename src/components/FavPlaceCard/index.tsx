@@ -4,16 +4,28 @@ import classes from './FavPlaceCard.module.css'
 import { useGetCurrentWeatherData } from '../../services/GetCurrentWeatherData'
 import DateUtility from '../../utils/DateUtility'
 import NumberUtility from '../../utils/NumberUtility'
-
+import { useSearchParams } from 'react-router'
 type Props = {
   city: string
 }
 
 const FavPlaceCard: FC<Props> = ({ city }) => {
+  const [_, setSearch] = useSearchParams()
+
   const { data: weatherData } = useGetCurrentWeatherData(city)
 
+  const handleCardClick = () => {
+    setSearch({ search: city })
+  }
+
   return (
-    <Card withBorder p="xs" radius="lg">
+    <Card
+      className={classes.card}
+      withBorder
+      p="xs"
+      radius="lg"
+      onClick={handleCardClick}
+    >
       <Group justify="space-between" mb="xs" align="flex-start">
         <Box>
           <Text className={classes.cityName}>{weatherData?.location.name}</Text>

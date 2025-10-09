@@ -1,12 +1,10 @@
 import {
   AppShell,
-  Autocomplete,
   Burger,
   Card,
   Flex,
   Group,
   MantineProvider,
-  Stack,
   Title,
 } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
@@ -14,56 +12,37 @@ import './App.css'
 import { useGetForecastData } from './services/GetForecastData'
 import ThemeToggleButton from './components/ThemeToggleButton'
 import { theme } from './utils/theme'
-import { useDisclosure, useLocalStorage } from '@mantine/hooks'
-import { useForm } from '@mantine/form'
+import { useDisclosure } from '@mantine/hooks'
 import HourlyWeatherCard from './components/HourlyWeatherCard'
 import CurrentWeahterCard from './components/CurrentWeatherCard'
 import ForecastCard from './components/ForecastCard'
-
-import FavPlaceCard from './components/FavPlaceCard'
 import AqiCard from './components/AqiCard'
-import { useSearchParam } from './hooks/useSearchParam'
+import Navbar from './components/Navbar'
+import { useSearchParams } from 'react-router'
+import { useGeolocation } from './hooks/useGeolocation'
+import { useEffect } from 'react'
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
 
-  const { search, setSearch } = useSearchParam()
+  const {
+    coords: { latitude, longitude },
+  } = useGeolocation({ watch: false })
 
-  const { data: forecastData } = useGetForecastData(search)
+  const coords = latitude && longitude ? `${latitude},${longitude}` : null
+  // console.log('🚀 ~ App ~ coords:', coords)
 
-  const [historyItems, setHistoryItems] = useLocalStorage<string[]>({
-    key: 'history',
-    defaultValue: [],
-  })
-  const [favPlaces] = useLocalStorage<string[]>({
-    key: 'favPlaces',
-    defaultValue: [],
-  })
+  const [search, setSearch] = useSearchParams()
+  // console.log('🚀 ~ App ~ search:', search)
 
-  const form = useForm({
-    initialValues: {
-      searchValue: '',
-    },
-  })
+  const { data: forecastData } = useGetForecastData(search.get('search') || '')
 
-  const handleSubmit = form.onSubmit((values: typeof form.values) => {
-    setSearch(values.searchValue)
-    setHistoryItems((prev) =>
-      [
-        values.searchValue,
-        ...prev.filter((item) => item !== values.searchValue),
-      ].slice(0, 10)
-    )
-    form.setValues({ searchValue: '' })
-  })
+  useEffect(() => {
+    if (!coords) return
 
-  const handleOptionSubmit = (value: string) => {
-    setSearch(value)
-    setHistoryItems((prev) =>
-      [value, ...prev.filter((item) => item !== value)].slice(0, 10)
-    )
-  }
+    setSearch({ search: coords })
+  }, [coords])
 
   return (
     <MantineProvider theme={theme}>
@@ -97,28 +76,11 @@ function App() {
             <Title order={2} flex={1}>
               Weather App
             </Title>
-
             <ThemeToggleButton is_day={forecastData?.current.is_day} />
           </Group>
         </AppShell.Header>
         <AppShell.Navbar p="md">
-          <form onSubmit={handleSubmit}>
-            <Autocomplete
-              key={form.key('searchValue')}
-              {...form.getInputProps('searchValue')}
-              onOptionSubmit={handleOptionSubmit}
-              clearable
-              placeholder="Search"
-              data={historyItems}
-              radius="lg"
-            />
-          </form>
-
-          <Stack mt="md" gap="md">
-            {favPlaces.map((place, index) => (
-              <FavPlaceCard key={index} city={place} />
-            ))}
-          </Stack>
+          <Navbar />
         </AppShell.Navbar>
         <AppShell.Main>
           <div className="main-content">
