@@ -13,30 +13,24 @@ import { Notifications } from '@mantine/notifications'
 import './App.css'
 import { useGetForecastData } from './services/GetForecastData'
 import ThemeToggleButton from './components/ThemeToggleButton'
-import { useGeolocation } from './hooks/useGeolocation'
 import { theme } from './utils/theme'
 import { useDisclosure, useLocalStorage } from '@mantine/hooks'
 import { useForm } from '@mantine/form'
 import HourlyWeatherCard from './components/HourlyWeatherCard'
 import CurrentWeahterCard from './components/CurrentWeatherCard'
 import ForecastCard from './components/ForecastCard'
-import { useEffect, useState } from 'react'
 
 import FavPlaceCard from './components/FavPlaceCard'
 import AqiCard from './components/AqiCard'
+import { useSearchParam } from './hooks/useSearchParam'
 
 function App() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
 
-  const [searchVal, setSearchVal] = useState('')
+  const { search, setSearch } = useSearchParam()
 
-  const {
-    coords: { latitude, longitude },
-  } = useGeolocation({ watch: false })
-
-  const coords = latitude && longitude ? `${latitude},${longitude}` : undefined
-  const { data: forecastData } = useGetForecastData(searchVal)
+  const { data: forecastData } = useGetForecastData(search)
 
   const [historyItems, setHistoryItems] = useLocalStorage<string[]>({
     key: 'history',
@@ -54,7 +48,7 @@ function App() {
   })
 
   const handleSubmit = form.onSubmit((values: typeof form.values) => {
-    setSearchVal(values.searchValue)
+    setSearch(values.searchValue)
     setHistoryItems((prev) =>
       [
         values.searchValue,
@@ -64,11 +58,12 @@ function App() {
     form.setValues({ searchValue: '' })
   })
 
-  useEffect(() => {
-    if (!coords) return
-
-    setSearchVal(coords)
-  }, [coords])
+  const handleOptionSubmit = (value: string) => {
+    setSearch(value)
+    setHistoryItems((prev) =>
+      [value, ...prev.filter((item) => item !== value)].slice(0, 10)
+    )
+  }
 
   return (
     <MantineProvider theme={theme}>
@@ -99,7 +94,9 @@ function App() {
               visibleFrom="sm"
               size="sm"
             />
-            <Title order={2}>Weather App</Title>
+            <Title order={2} flex={1}>
+              Weather App
+            </Title>
 
             <ThemeToggleButton is_day={forecastData?.current.is_day} />
           </Group>
@@ -109,6 +106,8 @@ function App() {
             <Autocomplete
               key={form.key('searchValue')}
               {...form.getInputProps('searchValue')}
+              onOptionSubmit={handleOptionSubmit}
+              clearable
               placeholder="Search"
               data={historyItems}
               radius="lg"

@@ -30,12 +30,7 @@ const HourlyWeatherCard: FC<Props> = ({ description, time, temp_c, icon }) => {
   return (
     <Card
       className={classes.card}
-      style={
-        hour === currHour
-          ? { backgroundColor: 'var(--mantine-color-gray-3' }
-          : {}
-      }
-      p="xs"
+      p="lg"
       {...(hour === currHour ? { ref: currHourRef } : {})}
     >
       <Stack align="center" gap={0}>
