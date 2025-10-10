@@ -4,14 +4,12 @@ import {
   Card,
   Flex,
   Group,
-  MantineProvider,
+  Loader,
   Title,
 } from '@mantine/core'
-import { Notifications } from '@mantine/notifications'
 import './App.css'
 import { useGetForecastData } from './services/GetForecastData'
 import ThemeToggleButton from './components/ThemeToggleButton'
-import { theme } from './utils/theme'
 import { useDisclosure } from '@mantine/hooks'
 import HourlyWeatherCard from './components/HourlyWeatherCard'
 import CurrentWeahterCard from './components/CurrentWeatherCard'
@@ -31,12 +29,10 @@ function App() {
   } = useGeolocation({ watch: false })
 
   const coords = latitude && longitude ? `${latitude},${longitude}` : null
-  // console.log('🚀 ~ App ~ coords:', coords)
 
-  const [search, setSearch] = useSearchParams()
-  // console.log('🚀 ~ App ~ search:', search)
+  const [_, setSearch] = useSearchParams()
 
-  const { data: forecastData } = useGetForecastData(search.get('search') || '')
+  const { data: forecastData, isLoading } = useGetForecastData()
 
   useEffect(() => {
     if (!coords) return
@@ -45,44 +41,45 @@ function App() {
   }, [coords])
 
   return (
-    <MantineProvider theme={theme}>
-      <Notifications />
-      <AppShell
-        padding="md"
-        header={{ height: 60 }}
-        navbar={{
-          width: 300,
-          breakpoint: 'sm',
-          collapsed: {
-            mobile: !mobileOpened,
-            desktop: !desktopOpened,
-          },
-        }}
-      >
-        <AppShell.Header>
-          <Group h="100%" px="md">
-            <Burger
-              opened={mobileOpened}
-              onClick={toggleMobile}
-              hiddenFrom="sm"
-              size="sm"
-            />
-            <Burger
-              opened={desktopOpened}
-              onClick={toggleDesktop}
-              visibleFrom="sm"
-              size="sm"
-            />
-            <Title order={2} flex={1}>
-              Weather App
-            </Title>
-            <ThemeToggleButton is_day={forecastData?.current.is_day} />
-          </Group>
-        </AppShell.Header>
-        <AppShell.Navbar p="md">
-          <Navbar />
-        </AppShell.Navbar>
-        <AppShell.Main>
+    <AppShell
+      padding="md"
+      header={{ height: 60 }}
+      navbar={{
+        width: 300,
+        breakpoint: 'sm',
+        collapsed: {
+          mobile: !mobileOpened,
+          desktop: !desktopOpened,
+        },
+      }}
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md">
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
+            size="sm"
+          />
+          <Burger
+            opened={desktopOpened}
+            onClick={toggleDesktop}
+            visibleFrom="sm"
+            size="sm"
+          />
+          <Title order={2} flex={1}>
+            Weather App
+          </Title>
+          <ThemeToggleButton is_day={forecastData?.current.is_day} />
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        <Navbar />
+      </AppShell.Navbar>
+      <AppShell.Main className="mantine-main">
+        {isLoading ? (
+          <Loader color="blue" type="dots" className="loader" />
+        ) : (
           <div className="main-content">
             <CurrentWeahterCard
               city={forecastData?.location.name}
@@ -116,9 +113,9 @@ function App() {
               />
             </Group>
           </div>
-        </AppShell.Main>
-      </AppShell>
-    </MantineProvider>
+        )}
+      </AppShell.Main>
+    </AppShell>
   )
 }
 

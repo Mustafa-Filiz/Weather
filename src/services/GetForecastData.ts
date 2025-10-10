@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { fullForecastSchema } from '../types/Forecast'
 import customFetch from '../utils/customFetch'
+import { useSearchParams } from 'react-router'
 
 export const getForecastData = async (city?: string) => {
   const response = await customFetch(
@@ -13,11 +14,13 @@ export const getForecastData = async (city?: string) => {
   return response
 }
 
-export const useGetForecastData = (city?: string) => {
+export const useGetForecastData = () => {
+  const [search] = useSearchParams()
+
   const query = useQuery({
-    queryKey: ['forecast', city],
-    queryFn: () => getForecastData(city),
-    enabled: !!city,
+    queryKey: ['forecast', search.get('search')],
+    queryFn: () => getForecastData(search.get('search') || ''),
+    enabled: !!search.get('search'),
   })
 
   return query

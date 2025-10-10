@@ -1,9 +1,19 @@
-.main-content {
-    padding: 0 16rem;
+.mantine-main {
+  position: relative;
 }
 
+.loader {
+  position: absolute !important;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+.main-content {
+  padding: 0 16rem;
+}
 
 .hourly-forecast-area {
-    flex-wrap: nowrap !important;
-    overflow: auto;
+  flex-wrap: nowrap !important;
+  overflow: auto;
 }

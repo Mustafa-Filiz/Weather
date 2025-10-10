@@ -39,9 +39,9 @@ const Navbar = () => {
       [value, ...prev.filter((item) => item !== value)].slice(0, 10)
     )
   }
+
   return (
     <div>
-      {' '}
       <form onSubmit={handleSubmit}>
         <Autocomplete
           key={form.key('searchValue')}
