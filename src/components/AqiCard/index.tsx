@@ -16,6 +16,7 @@ const AqiCard: FC<Props> = ({ aqi_index }) => {
       </Text>
       <Slider
         classNames={{
+          root: classes.slider,
           bar: classes.bar,
           thumb: classes.thumb,
         }}
