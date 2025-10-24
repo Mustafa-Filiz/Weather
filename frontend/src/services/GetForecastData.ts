@@ -5,9 +5,7 @@ import { useSearchParams } from 'react-router'
 
 export const getForecastData = async (city?: string) => {
   const response = await customFetch(
-    `/forecast.json?key=${
-      import.meta.env.VITE_WEATHER_API_KEY
-    }&q=${city}&days=3&aqi=yes`,
+    `/forecast?city=${encodeURIComponent(city || '')}`,
     fullForecastSchema
   )
 
